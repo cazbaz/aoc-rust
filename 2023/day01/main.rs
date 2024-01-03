@@ -15,31 +15,33 @@ fn literal_check() -> u32 {
     for _line in lines {
         let characters: Vec<_> = _line.split(&String::new()).collect::<Vec<_>>();
         let size: usize = characters.len();
-        let r: &usize = &size;
 
         let mut l_str: String = String::new();
         let mut r_str: String = String::new();
         let mut l_num: u32 = 0;
         let mut r_num: u32 = 0;
-
+        
         for l in 0..size {
-            //l_num = characters[l].parse::<u32>().unwrap_or(0);
             l_str = characters[l].to_string();
-            r_str = characters[r-l-1].to_string();
             
             if _numbers.contains(&l_str) {
                 l_num = characters[l].parse::<u32>().unwrap();
-            }
-
-            if _numbers.contains(&r_str) {
-                r_num = characters[r-l-1].parse::<u32>().unwrap();
-            }
-
-            if l_num > 0 && r_num > 0 {
-                result += l_num + r_num;
                 break;
             }
         }
+
+        for r in size..0 {
+            r_str = characters[r-1].to_string();
+            
+            if _numbers.contains(&r_str) {
+                r_num = characters[r-1].parse::<u32>().unwrap();
+                break;
+            }
+        }
+
+        println!("Found L: {}, R:{} in {}", &l_str, &r_str, &_line);
+        
+        result += l_num + r_num;
     }
 
     return result;
