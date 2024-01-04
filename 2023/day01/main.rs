@@ -25,15 +25,17 @@ fn literal_check() -> u32 {
             l_str = characters[l].to_string();
             
             if _numbers.contains(&l_str) {
+                println!("Found left number {}", &l_str);
                 l_num = characters[l].parse::<u32>().unwrap();
                 break;
             }
         }
 
-        for r in size..0 {
+        for r in size..1 {
             r_str = characters[r-1].to_string();
             
             if _numbers.contains(&r_str) {
+                println!("Found right number {}", &r_str);
                 r_num = characters[r-1].parse::<u32>().unwrap();
                 break;
             }
