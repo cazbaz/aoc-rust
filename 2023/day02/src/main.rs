@@ -29,27 +29,31 @@ fn parse_games() -> u32 {
     let input = fs::read_to_string("input").expect("Unable to read input file.");
 
     for line in input.lines() {
-        let game: Game = parse_into_game(line.to_string());
-        println!("{}", game.id);
-
-        result += game.id
+        let game = parse_into_game(line.to_string());
+        
+        match game {
+            Some(game) => {
+                result += game.id;
+            }
+            None => {
+                continue;
+            }
+        }
     }
 
     return result; 
 }
 
-fn parse_into_game(line: String) -> Game {
+fn parse_into_game(line: String) -> Option<Game> {
+    if line.is_empty() {
+        return None;
+    }
+
     let name_result_split: Vec<&str> = line.split(":").collect();
     let game_name: Vec<&str> = name_result_split[0].split(" ").collect(); 
     let game_id: String = String::from(game_name[1]);
-    let mut all_results: Vec<&str> = vec![];
+    let all_results: Vec<&str> = name_result_split[1].split(";").collect();
 
-    if name_result_split.len() > 0 {
-        all_results = name_result_split[1].split(";").collect();
-    } else {
-        return Game{id: game_id.parse::<u32>().unwrap_or(0), red: 0, green: 0, blue: 0};
-    }
-    
     let mut red_result: &str = "";
     let mut green_result: &str = "";
     let mut blue_result: &str = "";
@@ -71,10 +75,10 @@ fn parse_into_game(line: String) -> Game {
         }
     }
 
-    return Game {
+    Some(Game {
         id: game_id.parse::<u32>().unwrap_or(0),
         red: red_result.parse::<u16>().unwrap_or(0),
         green: green_result.parse::<u16>().unwrap_or(0),
         blue: blue_result.parse::<u16>().unwrap_or(0)
-    }
+    })
 }
