@@ -30,6 +30,7 @@ fn parse_games() -> u32 {
 
     for line in input.lines() {
         let game: Game = parse_into_game(line.to_string());
+        println!("{}", game.id);
 
         result += game.id
     }
@@ -41,7 +42,13 @@ fn parse_into_game(line: String) -> Game {
     let name_result_split: Vec<&str> = line.split(":").collect();
     let game_name: Vec<&str> = name_result_split[0].split(" ").collect(); 
     let game_id: String = String::from(game_name[1]);
-    let all_results: Vec<&str> = name_result_split[1].split(";").collect();
+    let mut all_results: Vec<&str> = vec![];
+
+    if name_result_split.len() > 0 {
+        all_results = name_result_split[1].split(";").collect();
+    } else {
+        return Game{id: game_id.parse::<u32>().unwrap_or(0), red: 0, green: 0, blue: 0};
+    }
     
     let mut red_result: &str = "";
     let mut green_result: &str = "";
@@ -50,21 +57,24 @@ fn parse_into_game(line: String) -> Game {
     for result in all_results {
         if result.contains("red") {
             red_result = result.split(" ").collect::<Vec<&str>>()[0];
+            continue;
         }
 
         if result.contains("green") {
             green_result = result.split(" ").collect::<Vec<&str>>()[0];
+            continue;
         }
 
         if result.contains("blue") {
             blue_result = result.split(" ").collect::<Vec<&str>>()[0];
+            continue;
         }
     }
 
     return Game {
-        id: game_id.parse::<u32>().unwrap(),
-        red: red_result.parse::<u16>().unwrap(),
-        green: green_result.parse::<u16>().unwrap(),
-        blue: blue_result.parse::<u16>().unwrap()
+        id: game_id.parse::<u32>().unwrap_or(0),
+        red: red_result.parse::<u16>().unwrap_or(0),
+        green: green_result.parse::<u16>().unwrap_or(0),
+        blue: blue_result.parse::<u16>().unwrap_or(0)
     }
 }
