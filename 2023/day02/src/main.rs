@@ -1,6 +1,4 @@
-
 /*
-
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 
 The Elf would first like to know which games would have been possible if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
@@ -54,6 +52,8 @@ fn parse_into_game(line: String) -> Option<Game> {
     let game_id: String = String::from(game_name[1]);
     let all_results: Vec<&str> = name_result_split[1].split(";").collect();
 
+    print!("name_result_split: {:?}\ngame_name: {:?}\nall_results: {:?}\n", name_result_split, game_name, all_results);
+
     let mut red_result: &str = "";
     let mut green_result: &str = "";
     let mut blue_result: &str = "";
@@ -75,10 +75,15 @@ fn parse_into_game(line: String) -> Option<Game> {
         }
     }
 
-    Some(Game {
+    //print!("r_result: {}, g_result: {}, b_result: {}\n", red_result, green_result, blue_result);
+
+    let game = Game {
         id: game_id.parse::<u32>().unwrap_or(0),
         red: red_result.parse::<u16>().unwrap_or(0),
         green: green_result.parse::<u16>().unwrap_or(0),
         blue: blue_result.parse::<u16>().unwrap_or(0)
-    })
+    };
+
+    //print!("id: {}, red: {}, green: {}, blue: {}\n", game.id, game.red, game.green, game.blue);
+    Some(game)
 }
